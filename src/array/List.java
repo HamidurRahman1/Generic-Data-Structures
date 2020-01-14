@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public interface List<T> extends Iterable<T>
 {
-    void add(T element) throws NullPointerException;
+    Boolean add(T element) throws NullPointerException;
     T get(int index) throws IndexOutOfBoundsException;
     T remove(int index) throws IndexOutOfBoundsException;
     T remove(T element) throws NoSuchElementException;
