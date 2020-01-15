@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class ArrayImpl<T> implements Array<T>
 {
-    private static Integer CAPACITY = 100;
+    private static int CAPACITY = 100;
     private int currentIndex;
     private T[] array;
 
@@ -12,7 +12,7 @@ public class ArrayImpl<T> implements Array<T>
         this(CAPACITY);
     }
 
-    public ArrayImpl(Integer capacity) throws IllegalArgumentException
+    public ArrayImpl(int capacity) throws IllegalArgumentException
     {
         if(capacity <= 0) throw new IllegalArgumentException("ArrayImpl capacity must be at least 1, given " + capacity);
         CAPACITY = capacity;
@@ -21,7 +21,7 @@ public class ArrayImpl<T> implements Array<T>
     }
 
     @Override
-    public Boolean add(T element) throws NullPointerException
+    public boolean add(T element) throws NullPointerException
     {
         if(element == null) throw new NullPointerException("ArrayImpl can contains only non null value.");
         if(!isFull())
@@ -52,7 +52,7 @@ public class ArrayImpl<T> implements Array<T>
     }
 
     @Override
-    public Boolean remove(T element) throws NoSuchElementException
+    public boolean remove(T element) throws NoSuchElementException
     {
         if(element == null) throw new IllegalArgumentException("NULL element passed in as an argument");
         for(int i = 0; i < currentIndex; i++)
@@ -89,21 +89,22 @@ public class ArrayImpl<T> implements Array<T>
     }
 
     @Override
-    public Integer size() {
+    public int size() {
         return currentIndex;
     }
 
     @Override
-    public Integer capacity() {
+    public int capacity() {
         return CAPACITY;
     }
 
     @Override
-    public Boolean isEmpty() {
+    public boolean isEmpty() {
         return currentIndex == 0;
     }
 
-    public Boolean isFull() {
+    @Override
+    public boolean isFull() {
         return currentIndex == CAPACITY;
     }
 
