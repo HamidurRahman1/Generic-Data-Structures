@@ -7,9 +7,8 @@ public interface List<T> extends Iterable<T>
     T get(int index) throws IndexOutOfBoundsException;
     T remove(int index) throws IndexOutOfBoundsException;
     boolean remove(T element);
+    boolean update(int index, T element) throws IndexOutOfBoundsException, NullPointerException;
 
     int size();
-    int capacity();
     boolean isEmpty();
-    boolean isFull();
 }
