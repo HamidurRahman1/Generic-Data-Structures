@@ -47,8 +47,34 @@ public class LinkedList<T> implements List<T>
     }
 
     @Override
-    public boolean add(int index, T element) throws NullPointerException, IllegalArgumentException {
-        return false;
+    public boolean add(int index, T element) throws NullPointerException, IllegalArgumentException
+    {
+        if(index < 0 || index > size()) throw new IllegalArgumentException("index is invalid, index="+index);
+        if(element == null) throw new NullPointerException("Passed element cannot be null.");
+        if(index == size()) add(element);
+        if(index == 0)
+        {
+            Node<T> t = new Node<>(element);
+            t.next = head;
+            head = t;
+            size++;
+        }
+        else
+        {
+            Node<T> temp = head;
+            int i = 0;
+            while (i < (index-1))
+            {
+                temp = temp.next;
+                i++;
+            }
+
+            Node<T> newNode = new Node<>(element);
+            newNode.next = temp.next;
+            temp.next = newNode;
+            size++;
+        }
+        return true;
     }
 
     @Override
@@ -84,5 +110,16 @@ public class LinkedList<T> implements List<T>
     @Override
     public Iterator<T> iterator() {
         return null;
+    }
+
+    public void print()
+    {
+        Node<T> temp = head;
+        while (temp.next != null)
+        {
+            System.out.println(temp.data);
+            temp = temp.next;
+        }
+        System.out.println(temp.data);
     }
 }
