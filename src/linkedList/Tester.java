@@ -8,7 +8,8 @@ public class Tester
         list.add("B");
         list.add("C");
         list.add("D");
-        list.add(3, "E");
+        list.add("E");
+        System.out.println("-> " + list.get(list.size()-1));
         ((LinkedList<String>) list).print();
     }
 }

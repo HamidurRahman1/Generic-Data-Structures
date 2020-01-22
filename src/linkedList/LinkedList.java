@@ -78,8 +78,18 @@ public class LinkedList<T> implements List<T>
     }
 
     @Override
-    public T get(int index) throws IndexOutOfBoundsException {
-        return null;
+    public T get(int index) throws IndexOutOfBoundsException
+    {
+        if(isEmpty()) return null;
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
+        int i = 0;
+        Node<T> tNode = head;
+        while (i < index)
+        {
+            tNode = tNode.next;
+            i++;
+        }
+        return tNode.data;
     }
 
     @Override
