@@ -80,7 +80,7 @@ public class LinkedList<T> implements List<T>
     @Override
     public T get(int index) throws IndexOutOfBoundsException
     {
-        if(isEmpty()) return null;
+        if(isEmpty()) throw new IndexOutOfBoundsException("List is empty.");
         if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
         int i = 0;
         Node<T> tNode = head;
@@ -103,8 +103,20 @@ public class LinkedList<T> implements List<T>
     }
 
     @Override
-    public boolean update(int index, T element) throws IndexOutOfBoundsException, NullPointerException {
-        return false;
+    public boolean update(int index, T element) throws IndexOutOfBoundsException, NullPointerException
+    {
+        if(element == null) throw new NullPointerException("Given argument is null");
+        if(isEmpty()) throw new IndexOutOfBoundsException("List is empty.");
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
+        int i = 0;
+        Node<T> tNode = head;
+        while (i < index)
+        {
+            tNode = tNode.next;
+            i++;
+        }
+        tNode.data = element;
+        return true;
     }
 
     @Override

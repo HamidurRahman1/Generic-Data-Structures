@@ -9,7 +9,7 @@ public class Tester
         list.add("C");
         list.add("D");
         list.add("E");
-        System.out.println("-> " + list.get(list.size()-1));
+        System.out.println("-> " + list.update(list.size()-1, "AA"));
         ((LinkedList<String>) list).print();
     }
 }
