@@ -74,13 +74,17 @@ public class DoubleLinkedDeque<T> implements Deque<T>
     }
 
     @Override
-    public T getFirst() throws NoSuchElementException {
-        return null;
+    public T getFirst() throws NoSuchElementException
+    {
+        if(isEmpty()) throw new NoSuchElementException("Empty Deque.");
+        return head.data;
     }
 
     @Override
-    public T getLast() throws NoSuchElementException {
-        return null;
+    public T getLast() throws NoSuchElementException
+    {
+        if(isEmpty()) throw new NoSuchElementException("Empty Deque.");
+        return tail.data;
     }
 
     @Override
@@ -98,7 +102,7 @@ public class DoubleLinkedDeque<T> implements Deque<T>
         Node<T> t = head;
         while (t != null)
         {
-            System.out.println(t.data);
+            System.out.println("=> " + t.data);
             t = t.next;
         }
     }
