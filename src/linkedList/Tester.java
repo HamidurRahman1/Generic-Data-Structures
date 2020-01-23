@@ -9,9 +9,12 @@ public class Tester
         list.add("C");
         list.add("D");
         list.add("E");
+        for(String s : list)
+            System.out.println(s);
         System.out.println("-> " + list.remove("E"));
         System.out.println("-> " + list.remove("D"));
-        ((LinkedList<String>) list).print();
         System.out.println(list.size());
+        for(String s : list)
+            System.out.println(s);
     }
 }

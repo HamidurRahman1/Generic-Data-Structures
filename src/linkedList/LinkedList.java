@@ -201,17 +201,36 @@ public class LinkedList<T> implements List<T>
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new ListIterator<>(head);
     }
 
-    public void print()
+    private class ListIterator<T> implements Iterator<T>
     {
-        Node<T> temp = head;
-        while (temp.next != null)
+        private Node<T> node;
+
+        public ListIterator(Node<T> node)
         {
-            System.out.println(temp.data);
-            temp = temp.next;
+            this.node = node;
         }
-        System.out.println(temp.data);
+
+        @Override
+        public boolean hasNext()
+        {
+            return node != null;
+        }
+
+        @Override
+        public T next()
+        {
+            T data = node.data;
+            node = node.next;
+            return data;
+        }
+
+        @Override
+        public void remove()
+        {
+            throw new UnsupportedOperationException("This operation is not supported.");
+        }
     }
 }
