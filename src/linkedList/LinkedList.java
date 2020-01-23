@@ -92,14 +92,10 @@ public class LinkedList<T> implements List<T>
     {
         if(isEmpty()) throw new IndexOutOfBoundsException("List is empty.");
         if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
-        int i = 0;
-        Node<T> tNode = head;
-        while (i < index)
-        {
-            tNode = tNode.next;
-            i++;
-        }
-        return tNode.data;
+        if(index == 0) return head.data;
+        if(index == size()-1) return current.data;
+        Node<T> positionNode = findNodeBefore(index);
+        return positionNode.next.data;
     }
 
     @Override
@@ -107,18 +103,65 @@ public class LinkedList<T> implements List<T>
     {
         if(isEmpty()) throw new IndexOutOfBoundsException("List is empty.");
         if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
-        int i = 0;
-        Node<T> tNode = head;
-        while (i < index)
+        if(index == 0)
         {
-            tNode = tNode.next;
-            i++;
+            T data = head.data;
+            head = head.next;
+            size--;
+            return data;
         }
-        return null;
+        else
+        {
+            Node<T> positionNode = findNodeBefore(index);
+            T data = positionNode.data;
+            if(index == size()-1)
+            {
+                positionNode.next = null;
+                size--;
+                return data;
+            }
+            else
+            {
+                positionNode.next = positionNode.next.next;
+                size--;
+                return data;
+            }
+        }
     }
 
     @Override
-    public boolean remove(T element) {
+    public boolean remove(T element) throws IllegalAccessException
+    {
+        if(isEmpty()) throw new IllegalAccessException("List is empty.");
+        if(element == null) throw new NullPointerException("NULL given.");
+        if(head.data.equals(element))
+        {
+            head = head.next;
+            size--;
+            return true;
+        }
+        int i = 1;
+        while (i < size())
+        {
+            Node<T> positionNode = findNodeBefore(i);
+            if(positionNode.next.data.equals(element))
+            {
+                if(positionNode.next.next == null)
+                {
+                    positionNode.next = null;
+                    current = positionNode;
+                    size--;
+                    return true;
+                }
+                else
+                {
+                    positionNode.next = positionNode.next.next;
+                    size--;
+                    return true;
+                }
+            }
+            i++;
+        }
         return false;
     }
 
@@ -128,15 +171,22 @@ public class LinkedList<T> implements List<T>
         if(element == null) throw new NullPointerException("Given argument is null");
         if(isEmpty()) throw new IndexOutOfBoundsException("List is empty.");
         if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
-        int i = 0;
-        Node<T> tNode = head;
-        while (i < index)
+        if(index == 0)
         {
-            tNode = tNode.next;
-            i++;
+            head.data = element;
+            return true;
         }
-        tNode.data = element;
-        return true;
+        else if(index == (size()-1))
+        {
+            current.data = element;
+            return true;
+        }
+        else
+        {
+            Node<T> positionNode = findNodeBefore(index);
+            positionNode.next.data = element;
+            return true;
+        }
     }
 
     @Override
