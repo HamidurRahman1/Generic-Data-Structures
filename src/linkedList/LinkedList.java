@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class LinkedList<T> implements List<T>
 {
-    class Node<T>
+    private class Node<T>
     {
         T data;
         Node<T> next;
@@ -23,6 +23,7 @@ public class LinkedList<T> implements List<T>
     }
 
     private Node<T> head;
+    private Node<T> current;
     private int size;
 
     public LinkedList() {}
@@ -30,17 +31,19 @@ public class LinkedList<T> implements List<T>
     @Override
     public boolean add(T element) throws NullPointerException
     {
+        if(element == null) throw new NullPointerException("NULL given.");
         if(isEmpty())
         {
             head = new Node<>(element);
+            current = head;
             size++;
             return true;
         }
         else
         {
-            Node<T> temp = head;
-            while(temp.next != null) temp = temp.next;
-            temp.next = new Node<>(element);
+            Node<T> tNode = new Node<>(element);
+            current.next = tNode;
+            current = tNode;
             size++;
             return true;
         }
@@ -51,30 +54,37 @@ public class LinkedList<T> implements List<T>
     {
         if(index < 0 || index > size()) throw new IllegalArgumentException("index is invalid, index="+index);
         if(element == null) throw new NullPointerException("Passed element cannot be null.");
-        if(index == size()) add(element);
+        if(index == size()) return add(element);
         if(index == 0)
         {
-            Node<T> t = new Node<>(element);
-            t.next = head;
-            head = t;
+            Node<T> tNode = new Node<>(element);
+            tNode.next = head;
+            head = tNode;
             size++;
+            return true;
         }
         else
         {
-            Node<T> temp = head;
-            int i = 0;
-            while (i < (index-1))
-            {
-                temp = temp.next;
-                i++;
-            }
-
             Node<T> newNode = new Node<>(element);
-            newNode.next = temp.next;
-            temp.next = newNode;
+            Node<T> positionNode = findNodeBefore(index);
+            newNode.next = positionNode.next;
+            positionNode.next = newNode;
             size++;
+            return true;
         }
-        return true;
+    }
+
+    private Node<T> findNodeBefore(int index)
+    {
+        int i = 0;
+        Node<T> tNode = head;
+
+        while (i < index-1)
+        {
+            tNode = tNode.next;
+            i++;
+        }
+        return tNode;
     }
 
     @Override
@@ -93,7 +103,17 @@ public class LinkedList<T> implements List<T>
     }
 
     @Override
-    public T remove(int index) throws IndexOutOfBoundsException {
+    public T remove(int index) throws IndexOutOfBoundsException
+    {
+        if(isEmpty()) throw new IndexOutOfBoundsException("List is empty.");
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is invalid.");
+        int i = 0;
+        Node<T> tNode = head;
+        while (i < index)
+        {
+            tNode = tNode.next;
+            i++;
+        }
         return null;
     }
 
