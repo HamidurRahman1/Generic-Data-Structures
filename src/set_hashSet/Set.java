@@ -1,6 +1,6 @@
-package set_linkedHashSet;
+package set_hashSet;
 
-public interface Set<E> extends Iterable<E>
+public interface Set<E>
 {
     boolean add(E e);
     boolean contains(E e);
