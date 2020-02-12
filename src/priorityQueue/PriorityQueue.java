@@ -78,6 +78,7 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
                     node.next = temp;
                     node.previous = temp.previous;
                     temp.previous.next = node;
+                    temp.previous = node;
                     return;
                 }
             }
@@ -85,6 +86,7 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
             {
                 node.next = temp.next;
                 node.previous = temp;
+                temp.next.previous = node;
                 temp.next = node;
                 return;
             }
@@ -96,6 +98,7 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
             node.next = temp;
             node.previous = temp.previous;
             temp.previous.next = node;
+            temp.previous = node;
         }
         else
         {
@@ -137,11 +140,17 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
     public String toString()
     {
         StringBuilder stringBuilder = new StringBuilder();
-//        while (head != null)
+        while (head != null)
+        {
+            stringBuilder.append(head.data + " -> ");
+            head = head.next;
+        }
+//        while (head.previous != null)
 //        {
-//            stringBuilder.append(head.data + " -> ");
-//            head = head.next;
+//            System.out.println(head.data);
+//            head = head.previous;
 //        }
+//        System.out.println(head.data);
         return stringBuilder.toString();
     }
 }
