@@ -2,7 +2,7 @@ package priorityQueue;
 
 import java.util.NoSuchElementException;
 
-public interface Queue<T extends Comparable<T>>
+public interface Queue<T>
 {
     void add(T element) throws NullPointerException;
     T removeMin() throws NoSuchElementException;
