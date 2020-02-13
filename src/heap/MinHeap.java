@@ -4,6 +4,20 @@ import java.util.NoSuchElementException;
 
 public class MinHeap<T extends Comparable> implements Heap<T>
 {
+    private static int capacity = 99;
+    private int size;
+    private T[] elements;
+
+    public MinHeap() {
+        this(capacity);
+    }
+
+    public MinHeap(int capacity)
+    {
+        MinHeap.capacity = capacity;
+        elements = (T[]) new Comparable[capacity];
+    }
+
     @Override
     public void add(T element) throws NullPointerException
     {
@@ -18,16 +32,16 @@ public class MinHeap<T extends Comparable> implements Heap<T>
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public int capacity() {
-        return 0;
+        return capacity;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 }
