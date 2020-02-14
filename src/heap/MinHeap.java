@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class MinHeap<T extends Comparable> implements Heap<T>
 {
-    private static int capacity = 5;
+    private static int capacity = 99;
     private int size;
     private T[] elements;
 
@@ -50,7 +50,36 @@ public class MinHeap<T extends Comparable> implements Heap<T>
     @Override
     public T remove() throws NoSuchElementException
     {
-        return null;
+        if(isEmpty()) throw new NoSuchElementException("Heap is empty.");
+        T root = elements[0];
+        swap(size()-1, 0);
+        elements[size()-1] = null;
+        size--;
+        bubbleDown();
+        return root;
+    }
+
+    private void bubbleDown()
+    {
+        int parent = 0;
+        int child;
+
+        while((child = selectSmallestChild(parent)) != -1)
+        {
+            swap(child, parent);
+            parent = child;
+        }
+    }
+
+    private int selectSmallestChild(int parent)
+    {
+        int leftChild = 2*parent + 1;
+        int rightChild = 2*parent + 2;
+
+        if(leftChild >= elements.length || elements[leftChild] == null
+                || rightChild >= elements.length || elements[rightChild] == null) return -1;
+        if(elements[leftChild].compareTo(elements[rightChild]) <= 0) return leftChild;
+        return rightChild;
     }
 
     @Override
