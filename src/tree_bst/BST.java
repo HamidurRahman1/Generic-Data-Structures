@@ -26,15 +26,20 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     private int size;
 
     @Override
-    public void addRoot(T data) throws Exception
+    public void addRoot(T data) throws NullPointerException, Exception
     {
-
+        if(data == null) throw new NullPointerException("NULL given.");
+        if(root != null) throw new Exception("Root already exists.");
+        root = new Node<>(data);
+        size++;
     }
 
     @Override
-    public void add(T data) throws NullPointerException
+    public void add(T data) throws NullPointerException, Exception
     {
-
+        if(data == null) throw new NullPointerException("NULL given.");
+        if(root == null)
+            addRoot(data);
     }
 
     @Override
@@ -58,7 +63,8 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     @Override
     public void clear()
     {
-
+        root = null;
+        size = 0;
     }
 
     @Override
