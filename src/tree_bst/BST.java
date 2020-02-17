@@ -107,6 +107,7 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     @Override
     public boolean contains(T data) throws NullPointerException
     {
+        if(data == null) throw new NullPointerException("NULL given.");
         Node<T> node = find(root, root, data);
         if(node == null)
             return false;
@@ -122,6 +123,12 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     @Override
     public T get(T data) throws NullPointerException
     {
+        if(data == null) throw new NullPointerException("NULL given.");
+        Node<T> node = find(root, root, data);
+        if(node == null)
+            return null;
+        if(node.data.equals(data))
+            return node.data;
         return null;
     }
 
