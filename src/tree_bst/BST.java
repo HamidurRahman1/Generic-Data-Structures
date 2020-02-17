@@ -1,5 +1,10 @@
 package tree_bst;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class BST<T extends Comparable<T>> implements Tree<T>
 {
     private static class Node<T>
@@ -132,11 +137,21 @@ public class BST<T extends Comparable<T>> implements Tree<T>
         return size() == 0;
     }
 
-    private void inOrder(Node<T> node)
+    public List<T> levelOrder()
     {
-        if(node == null) return;
-        System.out.println(node.data);
-        if(node.left != null) inOrder(node.left);
-        if(node.right != null) inOrder(node.right);
+        Queue<Node<T>> queue = new ConcurrentLinkedQueue<>();
+        List<T> list = new LinkedList<>();
+        if(root == null) return null;
+        queue.add(root);
+
+        while (!queue.isEmpty())
+        {
+            Node<T> node = queue.poll();
+            list.add(node.data);
+
+            if(node.left != null) queue.add(node.left);
+            if(node.right != null) queue.add(node.right);
+        }
+        return list;
     }
 }
