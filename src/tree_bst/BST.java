@@ -117,6 +117,24 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     @Override
     public void remove(T data) throws NullPointerException
     {
+        if(data == null) throw new NullPointerException("NULL given.");
+        Node<T> node = find(root, root, data);
+        if(node == null || !node.data.equals(data)) return;
+        if(root.data.equals(data))
+            remove(node, data);
+        else if(node.left == null && node.right == null)
+            removeAsLeaf(node);
+        else
+            remove(node, data);
+    }
+
+    private void removeAsLeaf(Node<T> node)
+    {
+        System.out.println(node.parent.data);
+    }
+
+    private void remove(Node<T> node, T data)
+    {
 
     }
 
