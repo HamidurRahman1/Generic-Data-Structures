@@ -49,7 +49,7 @@ public class BST<T extends Comparable<T>> implements Tree<T>
                 size++;
                 return;
             }
-            add(root.left, root.left, data);
+            add(find(root.left, root.left, data), data);
         }
         else if(data.compareTo(root.data) > 0)
         {
@@ -61,15 +61,14 @@ public class BST<T extends Comparable<T>> implements Tree<T>
                 size++;
                 return;
             }
-            add(root.right, root.right, data);
+            add(find(root.right, root.right, data), data);
         }
         else if(root.data.compareTo(data) == 0)
             root.data = data;
     }
 
-    private void add(Node<T> runningNode, Node<T> runningParent, T data)
+    private void add(Node<T> parent, T data)
     {
-        Node<T> parent = find(runningNode, runningParent, data);
         if(data.compareTo(parent.data) < 0)
         {
             Node<T> node = new Node<>(data);
@@ -136,8 +135,8 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     private void inOrder(Node<T> node)
     {
         if(node == null) return;
-        if(node.left != null) inOrder(node.left);
         System.out.println(node.data);
+        if(node.left != null) inOrder(node.left);
         if(node.right != null) inOrder(node.right);
     }
 }
