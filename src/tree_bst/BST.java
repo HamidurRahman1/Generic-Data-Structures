@@ -97,7 +97,9 @@ public class BST<T extends Comparable<T>> implements Tree<T>
         if(running == null) return parent;
         if(data.compareTo(running.data) < 0)
             return find(running.left, running, data);
-        return find(running.right, running, data);
+        else if(data.compareTo(running.data) > 0)
+            return find(running.right, running, data);
+        else return running;
     }
 
     @Override
