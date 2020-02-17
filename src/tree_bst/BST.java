@@ -38,15 +38,14 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     public void add(T data) throws NullPointerException, Exception
     {
         if(data == null) throw new NullPointerException("NULL given.");
-        if(root == null)
-            addRoot(data);
+        if(root == null) addRoot(data);
         else if(data.compareTo(root.data) < 0)
         {
             if(root.left == null)
             {
                 Node<T> node = new Node<>(data);
                 root.left = node;
-                node.parent = root.left;
+                node.parent = root;
                 size++;
                 return;
             }
@@ -54,7 +53,17 @@ public class BST<T extends Comparable<T>> implements Tree<T>
             inOrder(root);
         }
         else if(data.compareTo(root.data) > 0)
+        {
+            if(root.right == null)
+            {
+                Node<T> node = new Node<>(data);
+                root.right = node;
+                node.parent = root;
+                size++;
+                return;
+            }
             addRight(data);
+        }
         else if(root.data.compareTo(data) == 0)
             root.data = data;
     }
