@@ -41,7 +41,18 @@ public class BST<T extends Comparable<T>> implements Tree<T>
         if(root == null)
             addRoot(data);
         else if(data.compareTo(root.data) < 0)
+        {
+            if(root.left == null)
+            {
+                Node<T> node = new Node<>(data);
+                root.left = node;
+                node.parent = root.left;
+                size++;
+                return;
+            }
             addLeft(data);
+            inOrder(root);
+        }
         else if(data.compareTo(root.data) > 0)
             addRight(data);
         else if(root.data.compareTo(data) == 0)
@@ -50,14 +61,6 @@ public class BST<T extends Comparable<T>> implements Tree<T>
 
     private void addLeft(T data)
     {
-        if(root.left == null)
-        {
-            Node<T> node = new Node<>(data);
-            root.left = node;
-            node.parent = root.left;
-            size++;
-//            return;
-        }
         Node<T> parent = find(root.left, root.left, data);
         if(data.compareTo(parent.data) < 0)
         {
@@ -65,7 +68,6 @@ public class BST<T extends Comparable<T>> implements Tree<T>
             parent.left = node;
             node.parent = parent;
             size++;
-//            return;
         }
         else if(data.compareTo(parent.data) > 0)
         {
@@ -73,15 +75,9 @@ public class BST<T extends Comparable<T>> implements Tree<T>
             parent.right = node;
             node.parent = parent;
             size++;
-//            return;
         }
         else if(data.compareTo(parent.data) == 0)
-        {
             parent.data = data;
-            return;
-        }
-
-        inOrder(root);
     }
 
     private void addRight(T data)
@@ -137,8 +133,8 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     private void inOrder(Node<T> node)
     {
         if(node == null) return;
-        System.out.println(node.data);
         if(node.left != null) inOrder(node.left);
+        System.out.println(node.data);
         if(node.right != null) inOrder(node.right);
     }
 }
