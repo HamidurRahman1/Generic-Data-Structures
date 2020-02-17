@@ -14,6 +14,7 @@ public class Tester
         t.add(6);
         t.add(10);
         t.add(9);
+        System.out.println(t.contains(9));
         System.out.println(((BST<Integer>) t).levelOrder());
     }
 }

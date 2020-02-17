@@ -94,18 +94,23 @@ public class BST<T extends Comparable<T>> implements Tree<T>
 
     private Node<T> find(Node<T> running, Node<T> parent, T data)
     {
-        if(running == null) return parent;
+        if(running == null)
+            return parent;
+        if(data.compareTo(running.data) == 0)
+            return running;
         if(data.compareTo(running.data) < 0)
             return find(running.left, running, data);
-        else if(data.compareTo(running.data) > 0)
+        else
             return find(running.right, running, data);
-        else return running;
     }
 
     @Override
     public boolean contains(T data) throws NullPointerException
     {
-        return false;
+        Node<T> node = find(root, root, data);
+        if(node == null)
+            return false;
+        return node.data.equals(data);
     }
 
     @Override
