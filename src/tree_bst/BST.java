@@ -126,8 +126,8 @@ public class BST<T extends Comparable<T>> implements Tree<T>
 //            removeAsDecendent(node);
         else if(node.left != null && node.right == null)
             relinkLeftChild(node);
-//        else
-//            relinkRightChild(node);
+        else
+            relinkRightChild(node);
     }
 
     private void relinkLeftChild(Node<T> node)
@@ -135,6 +135,21 @@ public class BST<T extends Comparable<T>> implements Tree<T>
         if(node.parent != null)
         {
             node.parent.left = node.left;
+            size--;
+        }
+        else
+        {
+            root.data = node.data;
+            root.left = null;
+            size--;
+        }
+    }
+
+    private void relinkRightChild(Node<T> node)
+    {
+        if(node.parent != null)
+        {
+            node.parent.right = node.right;
             size--;
         }
         else
