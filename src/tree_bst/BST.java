@@ -134,8 +134,16 @@ public class BST<T extends Comparable<T>> implements Tree<T>
     {
         if(node.parent != null)
         {
-            node.parent.left = node.left;
-            size--;
+            if(node.data.compareTo(node.parent.data) < 0)
+            {
+                node.parent.left = node.left;
+                size--;
+            }
+            else if(node.data.compareTo(node.parent.data) > 0)
+            {
+                node.parent.right = node.left;
+                size--;
+            }
         }
         else
         {
