@@ -7,15 +7,15 @@ public class Tester
         Tree<Integer> t = new BST<>();
         t.add(5);
         t.add(4);
-        t.add(2);
+        t.add(8);
         t.add(3);
         t.add(1);
-        t.add(8);
+//        t.add(8);
 //        t.add(6);
 //        t.add(10);
 //        t.add(9);
         System.out.println(((BST<Integer>) t).levelOrder());
-        t.remove(-8);
+        t.remove(1);
         System.out.println(t.size());
         System.out.println(((BST<Integer>) t).levelOrder());
     }
