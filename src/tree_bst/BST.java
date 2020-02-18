@@ -132,16 +132,24 @@ public class BST<T extends Comparable<T>> implements Tree<T>
 
     private void removeAsLeaf(Node<T> node)
     {
-//        if(node.data.compareTo(node.parent.data) < 0)
-//        {
-//            node.parent.left = null;
-//            size--;
-//        }
-//        else if(node.data.compareTo(node.parent.data) > 0)
-//        {
-//            node.parent.right = null;
-//            size--;
-//        }
+        if(node.parent != null)
+        {
+            if(node.data.compareTo(node.parent.data) < 0)
+            {
+                node.parent.left = null;
+                size--;
+            }
+            else if(node.data.compareTo(node.parent.data) > 0)
+            {
+                node.parent.right = null;
+                size--;
+            }
+        }
+        else
+        {
+            root = null;
+            size = 0;
+        }
     }
 
     private void remove(Node<T> node, T data)
