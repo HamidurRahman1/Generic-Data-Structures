@@ -1,5 +1,6 @@
 package tree_bst;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -25,194 +26,167 @@ public class BST<T extends Comparable<T>> implements Tree<T>
             this.left = left;
             this.right = right;
         }
-    }
 
+        private void removeChild(Node<T> child)
+        {
+            if(child == null) return;
+            else if(this.right == child)
+                this.right = null;
+            else if(this.left == child)
+                this.left = null;
+        }
+
+        private Iterator<Node> children()
+        {
+            List<Node> childList = new LinkedList<>();
+            if(this.left != null) childList.add(left);
+            if(this.right != null) childList.add(right);
+            return childList.iterator();
+        }
+    }
+    
     private Node<T> root;
     private int size;
 
-    @Override
-    public void addRoot(T data) throws NullPointerException, Exception
+    public BST() {}
+
+    private Node<T> root()
     {
-        if(data == null) throw new NullPointerException("NULL given.");
-        if(root != null) throw new Exception("Root already exists.");
-        root = new Node<>(data);
+        return root;
+    }
+
+    private void addRoot(T data)
+    {
+        if(root != null) return;
+        root = new Node <>(data);
         size++;
     }
 
     @Override
-    public void add(T data) throws NullPointerException, Exception
+    public void add(T data)
     {
-        if(data == null) throw new NullPointerException("NULL given.");
-        if(root == null) addRoot(data);
-        else if(data.compareTo(root.data) < 0)
-        {
-            if(root.left == null)
-            {
-                Node<T> node = new Node<>(data);
-                root.left = node;
-                node.parent = root;
-                size++;
-                return;
-            }
-            add(find(root.left, root.left, data), data);
-        }
-        else if(data.compareTo(root.data) > 0)
-        {
-            if(root.right == null)
-            {
-                Node<T> node = new Node<>(data);
-                root.right = node;
-                node.parent = root;
-                size++;
-                return;
-            }
-            add(find(root.right, root.right, data), data);
-        }
-        else if(root.data.compareTo(data) == 0)
-            root.data = data;
+        Node<T> node = find(data);
+        if (node == null)
+            addRoot(data);
+        else if (node.data.compareTo(data) > 0)
+            addLeft(node, data);
+        else if (node.data.compareTo(data) < 0)
+            addRight(node, data);
+        else node.data = data;
     }
 
-    private void add(Node<T> parent, T data)
+    private void addLeft(Node<T> parent, T data)
     {
-        if(data.compareTo(parent.data) < 0)
-        {
-            Node<T> node = new Node<>(data);
-            parent.left = node;
-            node.parent = parent;
-            size++;
-        }
-        else if(data.compareTo(parent.data) > 0)
-        {
-            Node<T> node = new Node<>(data);
-            parent.right = node;
-            node.parent = parent;
-            size++;
-        }
-        else if(data.compareTo(parent.data) == 0)
-            parent.data = data;
+        Node<T> left = new Node <>(data);
+        parent.left = left;
+        left.parent = parent;
+        size++;
     }
 
-    private Node<T> find(Node<T> running, Node<T> parent, T data)
+    private void addRight(Node<T> parent, T data)
     {
-        if(running == null)
-            return parent;
-        if(data.compareTo(running.data) == 0)
-            return running;
-        if(data.compareTo(running.data) < 0)
-            return find(running.left, running, data);
-        else
-            return find(running.right, running, data);
+        Node<T> right = new Node <>(data);
+        parent.right = right;
+        right.parent = parent;
+        size++;
     }
 
     @Override
-    public boolean contains(T data) throws NullPointerException
+    public void remove(T data)
     {
-        if(data == null) throw new NullPointerException("NULL given.");
-        Node<T> node = find(root, root, data);
-        if(node == null)
-            return false;
-        return node.data.equals(data);
-    }
-
-    @Override
-    public void remove(T data) throws NullPointerException
-    {
-        if(data == null) throw new NullPointerException("NULL given.");
-        Node<T> node = find(root, root, data);
+        Node<T> node = find(data);
         if(node == null || !node.data.equals(data)) return;
-        if(node.left == null && node.right == null)
-            removeAsLeaf(node);
-//        if(node.left != null && node.right != null)
-//            removeAsDecendent(node);
-        else if(node.left != null && node.right == null)
-            relinkLeftChild(node);
-        else
-            relinkRightChild(node);
+        remove(node);
     }
 
-    private void relinkLeftChild(Node<T> node)
+    private Node<T> remove(Node<T> node)
     {
-        if(node.parent != null)
+        if (isLeaf(node))
         {
-            if(node.data.compareTo(node.parent.data) < 0)
-            {
-                node.parent.left = node.left;
-                size--;
-            }
-            else if(node.data.compareTo(node.parent.data) > 0)
-            {
-                node.parent.right = node.left;
-                size--;
-            }
-        }
-        else
-        {
-            root.data = root.left.data;
-            root.left = null;
+            Node<T> parent = node.parent;
+            if (parent == null) root = null;
+            else parent.removeChild(node);
             size--;
+            return parent;
         }
+        Node<T> descendant = descendant(node);
+        promoteDescendant(node, descendant);
+        return remove(descendant);
     }
 
-    private void relinkRightChild(Node<T> node)
+    private void promoteDescendant(Node<T> parent, Node<T> descendant)
     {
-        if(node.parent != null)
-        {
-            if(node.data.compareTo(node.parent.data) < 0)
-            {
-                node.parent.left = node.right;
-                size--;
-            }
-            else if(node.data.compareTo(node.parent.data) > 0)
-            {
-                node.parent.right = node.right;
-                size--;
-            }
-        }
-        else
-        {
-            root.data = node.right.data;
-            root.right = null;
-            size--;
-        }
+        parent.data = descendant.data;
     }
 
-    private void removeAsLeaf(Node<T> node)
+    private Node<T> descendant(Node<T> parent)
     {
-        if(node.parent != null)
+        Node<T> child = parent.left;
+        if (child != null)
         {
-            if(node.data.compareTo(node.parent.data) < 0)
-            {
-                node.parent.left = null;
-                size--;
-            }
-            else if(node.data.compareTo(node.parent.data) > 0)
-            {
-                node.parent.right = null;
-                size--;
-            }
+            while (child.right != null) child = child.right;
+            return child;
         }
-        else
+        child = parent.right;
+        if (child != null)
         {
-            root = null;
-            size = 0;
+            while (child.left != null) child = child.left;
+            return child;
         }
-    }
-
-    private void remove(Node<T> node, T data)
-    {
-
+        return child;
     }
 
     @Override
-    public T get(T data) throws NullPointerException
+    public T get(T data)
     {
-        if(data == null) throw new NullPointerException("NULL given.");
-        Node<T> node = find(root, root, data);
-        if(node == null)
-            return null;
-        if(node.data.equals(data))
-            return node.data;
-        return null;
+        Node<T> node = find(data);
+        if(node == null || !node.data.equals(data)) return null;
+        return node.data;
+    }
+
+    @Override
+    public boolean contains(T data)
+    {
+        Node<T> node = find(data);
+        if(node == null || !node.data.equals(data)) return false;
+        return true;
+    }
+
+    private Node<T> find(T data)
+    {
+        if(root() == null) return null;
+        return findRecursively(root(), data);
+    }
+
+    private Node<T> findRecursively(Node<T> parent, T data)
+    {
+        int comparison = data.compareTo(parent.data);
+        if(comparison == 0) return parent;
+        else if(comparison < 0 && parent.left != null) return findRecursively(parent.left, data);
+        else if(comparison > 0 && parent.right != null) return findRecursively(parent.right, data);
+        return parent;
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        return size() == 0;
+    }
+
+    @Override
+    public int size()
+    {
+        return size;
+    }
+
+    private boolean isInternal(Node<T> node)
+    {
+        return node.children().hasNext();
+    }
+
+    private boolean isLeaf(Node<T> node)
+    {
+        return !isInternal(node);
     }
 
     @Override
@@ -222,33 +196,42 @@ public class BST<T extends Comparable<T>> implements Tree<T>
         size = 0;
     }
 
-    @Override
-    public int size()
-    {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        return size() == 0;
-    }
-
     public List<T> levelOrder()
     {
-        Queue<Node<T>> queue = new ConcurrentLinkedQueue<>();
-        List<T> list = new LinkedList<>();
-        if(root == null) return null;
-        queue.add(root);
+        List<T> nodeList = new LinkedList <>();
 
-        while (!queue.isEmpty())
+        if(root() == null) return nodeList;
+
+        Queue<Node> nodeQueue = new ConcurrentLinkedQueue <>();
+
+        try
         {
-            Node<T> node = queue.poll();
-            list.add(node.data);
+            nodeList.add(root().data);
+            nodeQueue.add(root());
 
-            if(node.left != null) queue.add(node.left);
-            if(node.right != null) queue.add(node.right);
+            while (!nodeQueue.isEmpty())
+            {
+                Node<T> node = nodeQueue.poll();
+                Iterator<Node> nodeItr = node.children();
+
+                while (nodeItr.hasNext())
+                {
+                    Node<T> treeNode = nodeItr.next();
+                    nodeQueue.add(treeNode);
+                    nodeList.add(treeNode.data);
+                }
+            }
         }
-        return list;
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return nodeList;
+    }
+
+    @Override
+    public String toString()
+    {
+        return levelOrder().toString();
     }
 }
