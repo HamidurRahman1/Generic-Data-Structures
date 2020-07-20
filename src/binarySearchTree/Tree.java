@@ -1,4 +1,4 @@
-package tree_bst;
+package binarySearchTree;
 
 public interface Tree<T>
 {

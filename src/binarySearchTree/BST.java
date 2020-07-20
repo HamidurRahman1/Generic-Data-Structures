@@ -1,4 +1,4 @@
-package tree_bst;
+package binarySearchTree;
 
 import java.util.Iterator;
 import java.util.LinkedList;
