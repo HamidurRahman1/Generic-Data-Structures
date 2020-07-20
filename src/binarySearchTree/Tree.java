@@ -1,6 +1,6 @@
 package binarySearchTree;
 
-public interface Tree<T>
+public interface Tree<T extends Comparable>
 {
     void add(T data);
     boolean contains(T data);
