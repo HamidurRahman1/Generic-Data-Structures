@@ -1,4 +1,4 @@
-package set_hashSet;
+package hashSet;
 
 import java.util.LinkedList;
 import java.util.List;

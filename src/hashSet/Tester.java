@@ -1,4 +1,4 @@
-package set_hashSet;
+package hashSet;
 
 public class Tester
 {
