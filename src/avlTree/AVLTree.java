@@ -3,6 +3,8 @@ package avlTree;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AVLTree<T extends Comparable> implements Tree<T>
 {
@@ -98,7 +100,7 @@ public class AVLTree<T extends Comparable> implements Tree<T>
         left.parent = parent;
         parent.left = left;
         size++;
-//        reBalance(parent);
+        reBalance(parent);
     }
 
     private void addRight(Node<T> parent, T data)
@@ -107,7 +109,7 @@ public class AVLTree<T extends Comparable> implements Tree<T>
         right.parent = parent;
         parent.right = right;
         size++;
-//        reBalance(parent);
+        reBalance(parent);
     }
 
     @Override
@@ -122,7 +124,7 @@ public class AVLTree<T extends Comparable> implements Tree<T>
         Node<T> node = find(data);
         if(node == null || !node.data.equals(data)) return;
         Node<T> parent = remove(node);
-//        reBalance(parent);
+        reBalance(parent);
     }
 
     private Node<T> remove(Node<T> node)
@@ -208,5 +210,92 @@ public class AVLTree<T extends Comparable> implements Tree<T>
     @Override
     public boolean isEmpty() {
         return size() == 0;
+    }
+
+    private void reBalance(Node<T> node)
+    {
+        if(node == null) return;
+        int oldMaxHeight = Node.MAX(node.leftChildHeight, node.rightChildHeight);
+        int newHeight = node.fixHeight();
+
+        if(newHeight > node.leftChildHeight + 1 || newHeight > node.rightChildHeight + 1)
+        {
+            //LL
+            if(node.leftChildHeight > node.rightChildHeight && node.left.leftChildHeight >= node.left.rightChildHeight)
+            {
+                rotate(node, node.left, node.left.left, node, node.left.left.left, node.left.left.right, node.left.right, node.right);
+            }
+            else if(node.leftChildHeight > node.rightChildHeight && node.left.rightChildHeight > node.left.leftChildHeight) //LR
+            {
+                rotate(node, node.left.right, node.left, node, node.left.left, node.left.right.left, node.left.right.right, node.right);
+            }
+            else if(node.rightChildHeight > node.leftChildHeight && node.right.rightChildHeight >= node.right.leftChildHeight) //RR
+            {
+                rotate(node, node.right, node, node.right.right, node.left, node.right.left, node.right.right.left, node.right.right.right);
+            }
+            else if(node.rightChildHeight > node.leftChildHeight && node.right.leftChildHeight > node.right.rightChildHeight) //RL
+            {
+                rotate(node, node.right.left, node, node.right, node.left, node.right.left.left, node.right.left.right, node.right.right);
+            }
+        }
+        newHeight = node.fixHeight();
+        if(oldMaxHeight != newHeight) reBalance(node.parent);
+    }
+
+    private void rotate(Node<T> problemNode, Node<T> root, Node<T> left, Node<T> right, Node<T> subTree1, Node<T> subTree2, Node<T> subTree3, Node<T> subTree4) {
+        Node<T> newLeft = new Node <>(problemNode, subTree1, subTree2, left.data);
+        Node<T> newRight = new Node <>(problemNode, subTree3, subTree4, right.data);
+
+        if(subTree1 != null) subTree1.parent = newLeft;
+        if(subTree2 != null) subTree2.parent = newLeft;
+        if(subTree3 != null) subTree3.parent = newRight;
+        if(subTree4 != null) subTree4.parent = newRight;
+
+        newLeft.fixHeight();
+        newRight.fixHeight();
+
+        problemNode.data = root.data;
+        problemNode.left = newLeft;
+        problemNode.right = newRight;
+    }
+
+    public List<T> levelOrder()
+    {
+        List<T> dataList = new LinkedList <>();
+
+        if(root == null) return dataList;
+
+        Queue<Node<T>> nodeQueue = new ConcurrentLinkedQueue<>();
+
+        try
+        {
+            dataList.add(root.data);
+            nodeQueue.add(root);
+
+            while (!nodeQueue.isEmpty())
+            {
+                Node<T> node = nodeQueue.poll();
+                Iterator<Node> nodeItr = node.children();
+
+                while (nodeItr.hasNext())
+                {
+                    Node<T> cNode = nodeItr.next();
+                    nodeQueue.add(cNode);
+                    dataList.add(cNode.data);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            throw ex;
+        }
+        return dataList;
+    }
+
+    @Override
+    public String toString()
+    {
+        return levelOrder().toString();
     }
 }
