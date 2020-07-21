@@ -1,4 +1,4 @@
-package hashSet;
+package linkedHashSet;
 
 import java.util.LinkedList;
 import java.util.List;

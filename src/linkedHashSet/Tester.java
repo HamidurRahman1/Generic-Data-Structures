@@ -1,4 +1,4 @@
-package hashSet;
+package linkedHashSet;
 
 public class Tester
 {
