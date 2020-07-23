@@ -10,4 +10,7 @@ public interface Graph<T>
 
     boolean containsVertex(T vertex);
     boolean containsEdge(T source, T destination);
+
+    boolean isEmpty();
+    void clear();
 }
