@@ -35,7 +35,7 @@ public class GraphImpl<T> implements Graph<T>
         if(!graph.containsKey(vertex)) return;
         List<T> edges = graph.get(vertex);
         graph.remove(vertex);
-        graph.keySet().forEach(k -> graph.get(k).removeAll(edges));
+        edges.forEach(edge -> graph.get(edge).remove(vertex));
     }
 
     @Override
@@ -72,5 +72,12 @@ public class GraphImpl<T> implements Graph<T>
     {
         graph = null;
         graph = new HashMap<>();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        graph.keySet().forEach(k -> stringBuilder.append(k).append(" - ").append(graph.get(k)).append("\n"));
+        return stringBuilder.toString();
     }
 }
