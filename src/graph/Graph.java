@@ -11,6 +11,7 @@ public interface Graph<T>
     boolean containsVertex(T vertex);
     boolean containsEdge(T source, T destination);
 
+    int totalVertices();
     boolean isEmpty();
     void clear();
 }
