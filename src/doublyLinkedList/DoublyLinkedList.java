@@ -22,14 +22,40 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
         }
     }
 
+    private int size;
+    private DNode<T> head;
+    private DNode<T> tail;
+
+    public DoublyLinkedList() {}
+
     @Override
     public void addFirst(T element) throws NullPointerException {
+        if(element == null) throw new NullPointerException("Data cannot be null");
+        DNode<T> node = new DNode <>(element);
 
+        if(isEmpty()) head = tail = node;
+        else
+        {
+            node.next = head;
+            head.previous = node;
+            head = node;
+        }
+        size++;
     }
 
     @Override
     public void addLast(T element) throws NullPointerException {
+        if(element == null) throw new NullPointerException("Data cannot be null");
+        DNode<T> node = new DNode <>(element);
 
+        if(isEmpty()) head = tail = node;
+        else
+        {
+            node.previous = tail;
+            tail.next = node;
+            tail = node;
+        }
+        size++;
     }
 
     @Override
@@ -39,16 +65,30 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
 
     @Override
     public T getFirst() {
-        return null;
+        if(isEmpty()) return null;
+        return head.data;
     }
 
     @Override
     public T getLast() {
-        return null;
+        if(isEmpty()) return null;
+        return tail.data;
     }
 
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is not valid");
+
+        int count = 0;
+        DNode<T> temp = head;
+
+        while (count < size())
+        {
+            if(count == index) return temp.data;
+            temp = temp.next;
+            count++;
+        }
+
         return null;
     }
 
@@ -79,12 +119,12 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     @Override
