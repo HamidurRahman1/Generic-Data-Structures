@@ -60,12 +60,16 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
 
     @Override
     public void add(int index, T element) throws IndexOutOfBoundsException, NullPointerException {
-        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is not valid");
         if(element == null) throw new NullPointerException("Data cannot be null");
-        if(size() == 0 || index == 0) {
+        if(size() == 0 && index == 0) {
             addFirst(element);
             return;
         }
+        if(index == size()) {
+            addLast(element);
+            return;
+        }
+        if(index < 0 || index > size()) throw new IndexOutOfBoundsException("Given index is not valid");
 
         int count = 0;
         DNode<T> temp = head;
@@ -76,15 +80,24 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
             count++;
         }
 
-        DNode<T> newNode = new DNode<>(element);
+        if(temp.next == null)
+        {
+            addLast(element);
+            swapData(temp, tail);
+            size++;
+        }
+        else
+        {
+            DNode<T> newNode = new DNode<>(element);
 
-        newNode.next = temp.next;
-        temp.next.previous = newNode;
-        temp.next = newNode;
-        newNode.previous = temp;
+            newNode.next = temp.next;
+            temp.next.previous = newNode;
+            temp.next = newNode;
+            newNode.previous = temp;
 
-        swapData(temp, newNode);
-        size++;
+            swapData(temp, newNode);
+            size++;
+        }
     }
 
     private void swapData(DNode<T> n1, DNode<T> n2)
@@ -176,6 +189,7 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         DNode<T> node = head;
+        if(node == null) return "";
         while (node.next != null)
         {
             stringBuilder.append(node.data).append(" - ");
