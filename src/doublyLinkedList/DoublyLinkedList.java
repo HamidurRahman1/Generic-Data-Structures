@@ -84,7 +84,6 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
         {
             addLast(element);
             swapData(temp, tail);
-            size++;
         }
         else
         {
@@ -162,7 +161,24 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
 
     @Override
     public void set(int index, T element) throws IndexOutOfBoundsException, NullPointerException {
+        if(element == null) throw new NullPointerException("Data cannot be null");
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is not valid");
+        if(head == null) throw new IllegalArgumentException("Trying to set an element in an empty list");
 
+        if(index == 0)
+        {
+            head.data = element;
+            return;
+        }
+
+        int count = 0;
+        DNode<T> node = head;
+        while (count != index)
+        {
+            node = node.next;
+            count++;
+        }
+        node.data = element;
     }
 
     @Override
@@ -188,11 +204,11 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
+        if(head == null) return "";
         DNode<T> node = head;
-        if(node == null) return "";
         while (node.next != null)
         {
-            stringBuilder.append(node.data).append(" - ");
+            stringBuilder.append(node.data).append(" -> ");
             node = node.next;
         }
         stringBuilder.append(node.data);
