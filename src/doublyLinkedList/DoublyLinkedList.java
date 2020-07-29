@@ -145,8 +145,33 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
     }
 
     @Override
-    public T removeLast() {
-        return null;
+    public T removeLast()
+    {
+        if(isEmpty()) return null;
+        if(size() == 1)
+        {
+            T data = head.data;
+            head = tail = null;
+            size = 0;
+            return data;
+        }
+        else if(size() == 2)
+        {
+            T data = tail.data;
+            head.next = null;
+            tail.previous = null;
+            tail = head;
+            size--;
+            return data;
+        }
+        else
+        {
+            T data = tail.data;
+            tail = tail.previous;
+            tail.next = null;
+            size--;
+            return data;
+        }
     }
 
     @Override
