@@ -175,11 +175,6 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
     }
 
     @Override
-    public T remove(T element) throws NullPointerException {
-        return null;
-    }
-
-    @Override
     public T remove(int index) throws IndexOutOfBoundsException {
         return null;
     }

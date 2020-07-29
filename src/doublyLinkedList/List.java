@@ -12,7 +12,6 @@ public interface List<T>
 
     T removeFirst();
     T removeLast();
-    T remove(T element) throws NullPointerException;
     T remove(int index) throws IndexOutOfBoundsException;
 
     void set(int index, T element) throws IndexOutOfBoundsException, NullPointerException;
