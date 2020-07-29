@@ -212,8 +212,9 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return null;
+    public Iterator<T> iterator()
+    {
+        return new AscendingIterator<>(head);
     }
 
     public Iterator<T> reverseIterator()
@@ -233,5 +234,35 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
         }
         stringBuilder.append(node.data);
         return stringBuilder.toString();
+    }
+
+    private class AscendingIterator<T> implements Iterator<T>
+    {
+        private DNode<T> temp;
+
+        public AscendingIterator(DNode<T> temp)
+        {
+            this.temp = temp;
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return temp != null;
+        }
+
+        @Override
+        public T next()
+        {
+            T ans = temp.data;
+            temp = temp.next;
+            return ans;
+        }
+
+        @Override
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
+        }
     }
 }

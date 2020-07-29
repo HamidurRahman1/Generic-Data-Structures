@@ -1,5 +1,7 @@
 package doublyLinkedList;
 
+import java.util.Iterator;
+
 public class Tester
 {
     public static void main(String[] args) {
@@ -10,25 +12,9 @@ public class Tester
         d.addLast( "4a");
         d.addLast( "5a");
 
-        System.out.println("-> "+d);
-        System.out.println(d.size());
-        System.out.println(d.removeLast());
-        System.out.println("-> "+d);
-        System.out.println(d.size());
-        System.out.println(d.removeLast());
-        System.out.println("-> "+d);
-        System.out.println(d.size());
-        System.out.println(d.removeLast());
-        System.out.println("-> "+d);
-        System.out.println(d.size());
-        System.out.println(d.removeLast());
-        System.out.println("-> "+d);
-        System.out.println(d.size());
-        System.out.println(d.removeLast());
-        System.out.println("-> "+d);
-        System.out.println(d.getLast());
-        System.out.println(d.isEmpty());
-        System.out.println(d.size());
-        System.out.println("-> "+d);
+        Iterator<String> iterator = ((DoublyLinkedList<String>) d).iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
     }
 }
