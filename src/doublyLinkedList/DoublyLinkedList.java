@@ -285,7 +285,7 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
         public T next()
         {
             T ans = temp.data;
-            temp = temp.next;
+            temp = temp.previous;
             return ans;
         }
 
