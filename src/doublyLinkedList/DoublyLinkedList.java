@@ -175,8 +175,13 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
     }
 
     @Override
-    public T remove(int index) throws IndexOutOfBoundsException {
-        return null;
+    public T remove(int index) throws IndexOutOfBoundsException
+    {
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("Given index is not valid");
+        if(isEmpty()) return null;
+        if((size() == 1 && index == 0) || (size() == 2 && index == 0)) return removeFirst();
+        else if(size() == 2 && index == 1) return removeLast();
+        else return null;
     }
 
     @Override
