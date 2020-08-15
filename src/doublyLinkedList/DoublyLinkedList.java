@@ -181,7 +181,19 @@ public class DoublyLinkedList<T> implements List<T>, Iterable<T>
         if(isEmpty()) return null;
         if((size() == 1 && index == 0) || (size() == 2 && index == 0)) return removeFirst();
         else if(size() == 2 && index == 1) return removeLast();
-        else return null;
+        else {
+            DNode<T> temp = head;
+            T data = null;
+            int i = 0;
+
+            while (i < index)
+            {
+                temp = temp.next;
+                i++;
+            }
+
+            return data;
+        }
     }
 
     @Override
